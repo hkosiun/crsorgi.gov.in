@@ -114,5 +114,62 @@
     packages: "transliteration"
   });   
 </script>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAYvTb9tgiNmmVjPqQvdgaon-gNnctt5fU",
+    authDomain: "crsorgi-10c55.firebaseapp.com",
+    projectId: "crsorgi-10c55",
+    storageBucket: "crsorgi-10c55.firebasestorage.app",
+    messagingSenderId: "318601775265",
+    appId: "1:318601775265:web:f6fb0b3d1d5ea6abcf08e0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function fetchDocumentData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const docId = urlParams.get('id');
+    
+    if (docId) {
+      const docRef = doc(db, "crsorgi", docId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        
+        const nameElement = document.getElementById('name');
+        if (nameElement) nameElement.innerText = data.Name || '';
+
+        const regNoElement = document.getElementById('regNo');
+        if (regNoElement) regNoElement.innerText = data.Registration_Number || '';
+
+        const dobElement = document.getElementById('dob');
+        if (dobElement) dobElement.innerText = data.Date_Of_Birth || '';
+
+        const fatherNameElement = document.getElementById('fatherName');
+        if (fatherNameElement) fatherNameElement.innerText = data.Name_Of_Father || '';
+
+        const motherNameElement = document.getElementById('motherName');
+        if (motherNameElement) motherNameElement.innerText = data.Name_Of_Mother || '';
+
+        const placeOfBirthElement = document.getElementById('placeOfBirth');
+        if (placeOfBirthElement) placeOfBirthElement.innerText = data.Place_Of_Birth || '';
+
+        const regDateElement = document.getElementById('regDate');
+        if (regDateElement) regDateElement.innerText = data.Registration_Date || '';
+
+      } else {
+        console.log("No such document!");
+      }
+    }
+  }
+
+  fetchDocumentData();
+</script>
+
   
 </body></html>
